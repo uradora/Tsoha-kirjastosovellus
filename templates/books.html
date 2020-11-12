@@ -1,0 +1,15 @@
+<title>Kirjastosovellus</title>
+Kirjojen määrä: {{ count }}
+<hr>
+{% for book in books %}
+{{ book[0] }}
+<hr> 
+{% endfor %}
+<a href="/new">Lisää uusi</a>
+<br>
+<form action="/result" method="POST">
+Etsi kirjoja:
+<input type="text" name="book">
+<input type="submit" value="Lähetä">
+</form>
+<a href="/">Etusivulle</a>
