@@ -12,7 +12,7 @@ db = SQLAlchemy(app)
 @app.route("/")
 def index():
 	return render_template("index.html")
-	
+
 @app.route("/login", methods=["POST"])
 def login():
 	username = request.form["username"]
@@ -29,9 +29,15 @@ def logout():
 def books():
 	result = db.session.execute("SELECT COUNT (*) FROM books")
 	count = result.fetchone()[0]
-	result = db.session.execute("SELECT name FROM books")
+	result = db.session.execute("SELECT id, name FROM books")
 	books = result.fetchall()
 	return render_template("books.html", count=count, books=books)
+
+@app.route("/book/<int:id>")
+def book(id):
+	result = db.session.execute("SELECT name, genre, author FROM books WHERE id=:id", {"id":id})
+	book = result.fetchall()
+	return render_template("book.html", book=book)
 
 @app.route("/new")
 def new():
@@ -39,9 +45,17 @@ def new():
 
 @app.route("/send", methods=["POST"])
 def send():
+	#what it book exists
 	name = request.form["name"]
-	sql = "INSERT INTO books (name) VALUES (:name)"
-	db.session.execute(sql, {"name":name})
+	genre = request.form["genre"]
+	author = request.form["author"]
+	sql = "INSERT INTO books (name, genre, author) VALUES (:name, :genre, :author)"
+	db.session.execute(sql, {"name":name, "genre":genre, "author":author})
+	#author needs to be added to liitostaulu later 
+	#and remove author column from books table
+	#what if author exists
+	#sql = "INSERT INTO authors (name) VALUES (:name)"
+	#db.session.execute(sql, {"name":name})
 	db.session.commit()
 	return redirect("/")
 

@@ -2,8 +2,9 @@
 Kirjojen määrä: {{ count }}
 <hr>
 {% for book in books %}
-{{ book[0] }}
-<hr> 
+{{ book[1] }}
+<a href="/book/{{ book[0] }}">Näytä kirjan tiedot</a>
+<hr>
 {% endfor %}
 <a href="/new">Lisää uusi</a>
 <br>
