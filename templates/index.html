@@ -4,11 +4,15 @@
 <a href="/books">Kirjalistaan</a>
 <a href="/logout">Kirjaudu ulos</a>
 {% else %}
+<p>Kirjaudu</p>
+<hr>
 <form action="/login" method="POST">
 <p>Käyttäjätunnus:<br>
 <input type="text" name="username"></p>
 <p>Salasana:</p>
 <input type="password" name="password"></p>
 <input type="submit" value="Kirjaudu">
+<hr>
+<a href="/newuser">Luo uusi käyttäjä</a>
 </form>
 {% endif %}
