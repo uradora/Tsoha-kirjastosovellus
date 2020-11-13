@@ -7,4 +7,12 @@ Kirjailija: {{ book[0][2] }}
 <hr>
 Lisää arvostelu:
 <hr>
+<form action="/sendreview" method="POST">
+{% for i in range (1,6) %}
+<input type="radio" name="review" value="{{ i }}">{{ i }}<br>
+{% endfor %}
+<input type="submit" value="Lähetä">
+<input type="hidden" name="id" value="{{ book[0][3] }}">
+</form>
+<hr>
 <a href="/books">Takaisin kirjalistaan</a>

@@ -66,9 +66,9 @@ def books():
 
 @app.route("/book/<int:id>")
 def book(id):
-	result = db.session.execute("SELECT name, genre, author FROM books WHERE id=:id", {"id":id})
+	result = db.session.execute("SELECT name, genre, author, id FROM books WHERE id=:id", {"id":id})
 	book = result.fetchall()
-	return render_template("book.html", book=book)
+	return render_template("book.html", book=book, id=id)
 
 @app.route("/new")
 def new():
@@ -89,6 +89,17 @@ def send():
 	#db.session.execute(sql, {"name":name})
 	db.session.commit()
 	return redirect("/")
+
+@app.route("/sendreview", methods=["POST"])
+def sendreview():
+	book_id = request.form["id"]
+	review = request.form["review"]
+	print(review)
+	if "review" in request.form:
+		sql = "INSERT INTO reviews (stars, book_id) VALUES (:review, :book_id)"
+		db.session.execute(sql, {"review":review, "book_id":book_id})
+		db.session.commit()
+	return redirect("/book/"+str(book_id))
 
 @app.route("/form")
 def form():
