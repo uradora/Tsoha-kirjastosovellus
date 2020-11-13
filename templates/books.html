@@ -8,9 +8,9 @@ Kirjojen määrä: {{ count }}
 {% endfor %}
 <a href="/new">Lisää uusi</a>
 <br>
-<form action="/result" method="POST">
-Etsi kirjoja:
-<input type="text" name="book">
+<form action="/result" method="GET">
+Etsi kirjoja nimellä:
+<input type="text" name="query">
 <input type="submit" value="Lähetä">
 </form>
 <a href="/">Etusivulle</a>

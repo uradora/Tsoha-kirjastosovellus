@@ -94,6 +94,10 @@ def send():
 def form():
 	return render_template("form.html")
 
-@app.route("/result", methods=["POST"])
+@app.route("/result")
 def result():
-	return render_template("result.html", book=request.form["book"])
+	query = request.args["query"]
+	sql = "SELECT id, name FROM books WHERE LOWER(name) LIKE LOWER(:query)"
+	result = db.session.execute(sql, {"query":"%"+query+"%"})
+	books = result.fetchall()
+	return render_template("result.html", books=books)

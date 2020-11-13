@@ -1,1 +1,9 @@
-{% print(book) %}
+<title>Kirjastosovellus</title>
+{% for book in books %}
+{{ book[1] }}
+<a href="/book/{{ book[0] }}">Näytä kirjan tiedot</a>
+<hr>
+{% endfor %}
+<a href="/new">Lisää uusi</a>
+<br>
+<a href="/books">Takaisin</a>
