@@ -7,6 +7,8 @@ CREATE TABLE genres
 CREATE TABLE books 
 	(id SERIAL PRIMARY KEY, 
 	name TEXT, 
+	author TEXT,
+	genre TEXT,
 	author_id INTEGER REFERENCES authors,
 	genre_id INTEGER REFERENCES genres);
 CREATE TABLE reviews 
