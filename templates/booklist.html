@@ -1,0 +1,10 @@
+<title>Kirjastosovellus</title>
+Käyttäjän {{ session.username }} kirjalista:
+<hr>
+{% for book in books %}
+{{ book[0] }}
+<a href="/book/{{ book[1] }}">Näytä kirjan tiedot</a>
+<hr>
+{% endfor %}
+<br>
+<a href="/books">Takaisin</a>

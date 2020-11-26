@@ -14,5 +14,10 @@ Lisää arvostelu:
 <input type="submit" value="Lähetä">
 <input type="hidden" name="id" value="{{ book[0][3] }}">
 </form>
+<form action="/addtolist" method="POST">
+Lisää omaan listaan
+<input type="submit" value="Lähetä">
+<input type="hidden" name="id" value="{{ book[0][3] }}">
+</form>
 <hr>
-<a href="/books">Takaisin kirjalistaan</a>
+<a href="/books">Takaisin</a>

@@ -1,5 +1,5 @@
 <title>Kirjastosovellus</title>
-Kirjojen määrä: {{ count }}
+Kirjoja yhteensä: {{ count }}
 <hr>
 {% for book in books %}
 {{ book[1] }}
@@ -13,4 +13,5 @@ Etsi kirjoja nimellä:
 <input type="text" name="query">
 <input type="submit" value="Lähetä">
 </form>
-<a href="/">Etusivulle</a>
+<a href="/">Etusivulle</a> 
+<a href="/booklist">Tarkastele lukulistaasi</a>
