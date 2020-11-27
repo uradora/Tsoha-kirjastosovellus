@@ -82,13 +82,11 @@ def books():
 
 @app.route("/book/<int:id>")
 def book(id):
-	#add reviews here next
 	#aika purkkakoodia
 	result = db.session.execute("SELECT name, genre_id, author_id FROM books WHERE id=:id", {"id":id})
 	book = result.fetchone()
 	genre_id = book[1]
 	author_id = book[2]
-	#muuta syntaksi kompaktimpaan
 	sql = "SELECT name FROM genres WHERE id=:genre_id"
 	result = db.session.execute(sql, {"genre_id":genre_id})
 	genre = result.fetchone()[0]
@@ -103,7 +101,6 @@ def new():
 
 @app.route("/send", methods=["POST"])
 def send():
-	#test if book exists and if author exists
 	name = request.form["name"]
 	genre = request.form["genre"]
 	author = request.form["author"]
@@ -121,7 +118,7 @@ def send():
 			genre_id = result.fetchone()[0]
 		sql = "SELECT id FROM authors WHERE LOWER(name)=LOWER(:author)"
 		result = db.session.execute(sql, {"author":author})
-		author_id = result.fetchone()
+		author_id = result.fetchone()[0]
 		if author_id == None:
 			sql = "INSERT INTO authors (name) VALUES (:author)"
 			db.session.execute(sql, {"author":author})
@@ -164,7 +161,6 @@ def booklist():
 
 @app.route("/addtolist", methods=["POST"])
 def addtolist():
-	#listojen toimivuutta ei testattu
 	book_id = request.form["id"]
 	username = user_name()
 	if username != None:
@@ -181,4 +177,15 @@ def addtolist():
 			db.session.execute(sql, {"user_id":user_id, "book_id":book_id})
 			db.session.commit()
 	return redirect("/book/"+str(book_id))
+
+@app.route("/reviews/<int:id>")
+def reviews(id):
+	sql = "SELECT stars, COUNT(stars) FROM reviews WHERE book_id=:id GROUP BY stars"
+	result = db.session.execute(sql, {"id":id})
+	reviews = result.fetchall()
+	sql = "SELECT COUNT (*) FROM reviews WHERE book_id=:id"
+	result = db.session.execute(sql, {"id":id})
+	count = result.fetchone()[0]
+	return render_template("reviews.html", reviews=reviews, id=id, count=count)
+
 

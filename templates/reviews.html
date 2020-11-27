@@ -1,0 +1,11 @@
+<title>Kirjastosovellus</title>
+<hr>
+Arvosteluja yhteensä: {{ count }}
+<hr>
+<ul>
+{% for review in reviews %}
+<li>{{ review[0 ]}} tähteä: {{ review[1] }} kpl
+{% endfor %}
+</ul>
+<hr>
+<a href="/book/{{ id }}">Takaisin</a>

@@ -6,7 +6,6 @@ Genre: {{ genre }}
 Kirjailija: {{ author }}
 <hr>
 Lisää arvostelu:
-<hr>
 <form action="/sendreview" method="POST">
 {% for i in range (1,6) %}
 <input type="radio" name="review" value="{{ i }}">{{ i }}<br>
@@ -14,6 +13,9 @@ Lisää arvostelu:
 <input type="submit" value="Lähetä">
 <input type="hidden" name="id" value="{{ id }}">
 </form>
+<hr>
+<a href="/reviews/{{ id }}">Näytä arvostelut</a>
+<hr>
 <form action="/addtolist" method="POST">
 Lisää omaan listaan
 <input type="submit" value="Lähetä">
