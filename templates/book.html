@@ -1,9 +1,9 @@
 <title>Kirjastosovellus</title>
-Nimi: {{ book[0][0] }}
+Nimi: {{ name }}
 <hr>
-Genre: {{ book[0][1] }}
+Genre: {{ genre }}
 <hr>
-Kirjailija: {{ book[0][2] }}
+Kirjailija: {{ author }}
 <hr>
 Lisää arvostelu:
 <hr>
@@ -12,12 +12,12 @@ Lisää arvostelu:
 <input type="radio" name="review" value="{{ i }}">{{ i }}<br>
 {% endfor %}
 <input type="submit" value="Lähetä">
-<input type="hidden" name="id" value="{{ book[0][3] }}">
+<input type="hidden" name="id" value="{{ id }}">
 </form>
 <form action="/addtolist" method="POST">
 Lisää omaan listaan
 <input type="submit" value="Lähetä">
-<input type="hidden" name="id" value="{{ book[0][3] }}">
+<input type="hidden" name="id" value="{{ id }}">
 </form>
 <hr>
 <a href="/books">Takaisin</a>

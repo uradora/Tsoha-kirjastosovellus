@@ -55,9 +55,10 @@ def newuser():
 def senduser():
 	username = request.form["username"]
 	password = request.form["password"]
-	sql = "SELECT id FROM users WHERE username=:username"
+	sql = "SELECT password, id FROM users WHERE username=:username"
 	result = db.session.execute(sql, {"username":username})
-	if not result:
+	user = result.fetchone()
+	if user == None:
 		hash_value = generate_password_hash(password)
 		sql = "INSERT INTO users (username, password) VALUES (:username, :password)"
 		db.session.execute(sql, {"username":username, "password":hash_value})
@@ -81,43 +82,51 @@ def books():
 
 @app.route("/book/<int:id>")
 def book(id):
-	result = db.session.execute("SELECT name, genre, author, id FROM books WHERE id=:id", {"id":id})
-	book = result.fetchall()
-	return render_template("book.html", book=book, id=id)
+	#add reviews here next
+	#aika purkkakoodia
+	result = db.session.execute("SELECT name, genre_id, author_id FROM books WHERE id=:id", {"id":id})
+	book = result.fetchone()
+	genre_id = book[1]
+	author_id = book[2]
+	#muuta syntaksi kompaktimpaan
+	sql = "SELECT name FROM genres WHERE id=:genre_id"
+	result = db.session.execute(sql, {"genre_id":genre_id})
+	genre = result.fetchone()[0]
+	sql = "SELECT name FROM authors WHERE id=:author_id"
+	result = db.session.execute(sql, {"author_id":author_id})
+	author = result.fetchone()[0]
+	return render_template("book.html", name=book[0], genre=genre, author=author, id=id)
 
 @app.route("/new")
 def new():
 	return render_template("new.html")
 
 @app.route("/send", methods=["POST"])
-#kirjan lisääminen ei toimi
 def send():
-	#what it book exists, test if that validation works
+	#test if book exists and if author exists
 	name = request.form["name"]
 	genre = request.form["genre"]
 	author = request.form["author"]
-	sql = "SELECT id FROM books WHERE LOWER(name)=LOWER(:name)"
+	sql = "SELECT name, id FROM books WHERE LOWER(name)=LOWER(:name)"
 	result = db.session.execute(sql, {"name":name})
-	if result:
-		flash('Kirja on jo lisätty')
-	else:
-		#tuleeko error jos ei löy'y
-		#test with a new genre
+	book = result.fetchone()
+	if book == None:
 		sql = "SELECT id FROM genres WHERE LOWER(name)=LOWER(:genre)"
-		genre_id = db.session.execute(sql, {"genre":genre})
-		if not genre_id:
-			#tulee kahdesti sama kysely
+		result = db.session.execute(sql, {"genre":genre})
+		genre_id = result.fetchone()[0]
+		if genre_id == None:
 			sql = "INSERT INTO genres (name) VALUES (:genre)"
 			db.session.execute(sql, {"genre":genre})
-			sql = "SELECT id FROM genres WHERE LOWER(name)=LOWER(:genre)"
-			genre_id = db.session.execute(sql, {"genre":genre})
-		sql = "SELECT id FROM authros WHERE LOWER(name)=LOWER(:author)"
-		author_id = db.session.execute(sql, {"author":author})
-		if not author_id:
+			result = db.session.execute("SELECT currval('genres_id_seq')")
+			genre_id = result.fetchone()[0]
+		sql = "SELECT id FROM authors WHERE LOWER(name)=LOWER(:author)"
+		result = db.session.execute(sql, {"author":author})
+		author_id = result.fetchone()
+		if author_id == None:
 			sql = "INSERT INTO authors (name) VALUES (:author)"
 			db.session.execute(sql, {"author":author})
-			sql = "SELECT id FROM authors WHERE LOWER(name)=LOWER(:author)"
-			author_id = db.session.execute(sql, {"author":author})
+			result = db.session.execute("SELECT currval('authors_id_seq')")
+			author_id = result.fetchone()[0]
 		sql = "INSERT INTO books (name, author_id, genre_id) VALUES (:name, :author_id, :genre_id)"
 		db.session.execute(sql, {"name":name, "author_id":author_id, "genre_id":genre_id})
 		db.session.commit()
@@ -155,13 +164,21 @@ def booklist():
 
 @app.route("/addtolist", methods=["POST"])
 def addtolist():
+	#listojen toimivuutta ei testattu
 	book_id = request.form["id"]
 	username = user_name()
-	if username:
+	if username != None:
 		sql = "SELECT id FROM users WHERE username=:username"
-		user_id = db.session.execute(sql, {"username":username})
-		sql = "INSERT INTO lists (user_id, book_id) VALUES (:user_id, :book_id)"
-		db.session.execute(sql, {"user_id":user_id, "book_id":book_id})
-		db.session.commit()
+		result = db.session.execute(sql, {"username":username})
+		user_id = result.fetchone()[0]
+		sql = "SELECT book_id, user_id FROM lists WHERE book_id=:book_id AND user_id=:user_id"
+		result = db.session.execute(sql, {"book_id":book_id, "user_id":user_id})
+		#toimii mutta niin paljon purkkaa
+		if result != None:
+			listing = result.fetchone()
+		if listing == None:
+			sql = "INSERT INTO lists (user_id, book_id) VALUES (:user_id, :book_id)"
+			db.session.execute(sql, {"user_id":user_id, "book_id":book_id})
+			db.session.commit()
 	return redirect("/book/"+str(book_id))
 
