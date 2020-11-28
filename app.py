@@ -83,16 +83,19 @@ def books():
 @app.route("/book/<int:id>")
 def book(id):
 	#aika purkkakoodia
+	#validointia tarvitaan; mitä jos genreä tai authoria ei löydy? nonetype
 	result = db.session.execute("SELECT name, genre_id, author_id FROM books WHERE id=:id", {"id":id})
 	book = result.fetchone()
 	genre_id = book[1]
 	author_id = book[2]
 	sql = "SELECT name FROM genres WHERE id=:genre_id"
 	result = db.session.execute(sql, {"genre_id":genre_id})
-	genre = result.fetchone()[0]
+	if result != None:
+		genre = result.fetchone()[0]
 	sql = "SELECT name FROM authors WHERE id=:author_id"
 	result = db.session.execute(sql, {"author_id":author_id})
-	author = result.fetchone()[0]
+	if result != None:
+		author = result.fetchone()[0]
 	return render_template("book.html", name=book[0], genre=genre, author=author, id=id)
 
 @app.route("/new")
