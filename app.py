@@ -103,6 +103,7 @@ def new():
 
 @app.route("/send", methods=["POST"])
 def send():
+	#lisää input-validointia: kaikki kentät tarvitaan
 	name = request.form["name"]
 	genre = request.form["genre"]
 	author = request.form["author"]
@@ -112,6 +113,7 @@ def send():
 	if book == None:
 		sql = "SELECT id FROM genres WHERE LOWER(name)=LOWER(:genre)"
 		result = db.session.execute(sql, {"genre":genre})
+		print(result)
 		if result != None:
 			genre_id = result.fetchone()[0]
 		else:
