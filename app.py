@@ -109,28 +109,26 @@ def send():
 	author = request.form["author"]
 	sql = "SELECT name, id FROM books WHERE LOWER(name)=LOWER(:name)"
 	result = db.session.execute(sql, {"name":name})
-	book = result.fetchone()
-	if book == None:
+	if result.fetchone() == None:
 		sql = "SELECT id FROM genres WHERE LOWER(name)=LOWER(:genre)"
 		result = db.session.execute(sql, {"genre":genre})
-		print(result)
-		if result != None:
+		if result.fetchone() != None:
 			genre_id = result.fetchone()[0]
 		else:
 			sql = "INSERT INTO genres (name) VALUES (:genre)"
 			db.session.execute(sql, {"genre":genre})
 			result = db.session.execute("SELECT currval('genres_id_seq')")
-			if result != None:
+			if result.fetchone() != None:
 				genre_id = result.fetchone()[0]
 		sql = "SELECT id FROM authors WHERE LOWER(name)=LOWER(:author)"
 		result = db.session.execute(sql, {"author":author})
-		if result != None:
+		if result.fetchone() != None:
 				author_id = result.fetchone()[0]
 		else:
 			sql = "INSERT INTO authors (name) VALUES (:author)"
 			db.session.execute(sql, {"author":author})
 			result = db.session.execute("SELECT currval('authors_id_seq')")
-			if result != None:
+			if result.fetchone() != None:
 				author_id = result.fetchone()[0]
 		sql = "INSERT INTO books (name, author_id, genre_id) VALUES (:name, :author_id, :genre_id)"
 		db.session.execute(sql, {"name":name, "author_id":author_id, "genre_id":genre_id})
