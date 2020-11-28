@@ -42,6 +42,14 @@ def login():
 def invalid():
 	return render_template("invalid.html")
 
+@app.route("/missinginfo")
+def missinginfo():
+	return render_template("missinginfo.html")
+
+@app.route("/alreadyexists")
+def alreadyexists():
+	return render_template("alreadyexists.html")
+
 @app.route("/logout")
 def logout():
 	del session["username"]
@@ -103,37 +111,55 @@ def new():
 
 @app.route("/send", methods=["POST"])
 def send():
-	#lisää input-validointia: kaikki kentät tarvitaan
+	#tee missing info sivu ja myös kirjan nimelle sama validointiprosessi
+	#sit pushit ja herokutestaus
 	name = request.form["name"]
 	genre = request.form["genre"]
 	author = request.form["author"]
 	sql = "SELECT name, id FROM books WHERE LOWER(name)=LOWER(:name)"
 	result = db.session.execute(sql, {"name":name})
-	if result.fetchone() == None:
+	book = result.fetchone()
+	if book == None:
+		if not name:
+			return redirect("/missinginfo")
+		if not genre:
+			return redirect("/missinginfo")
+		if not author:
+			return redirect("/missinginfo")
 		sql = "SELECT id FROM genres WHERE LOWER(name)=LOWER(:genre)"
 		result = db.session.execute(sql, {"genre":genre})
-		if result.fetchone() != None:
-			genre_id = result.fetchone()[0]
-		else:
+		genre_id = result.fetchone()
+		if genre_id == None:
 			sql = "INSERT INTO genres (name) VALUES (:genre)"
 			db.session.execute(sql, {"genre":genre})
 			result = db.session.execute("SELECT currval('genres_id_seq')")
-			if result.fetchone() != None:
-				genre_id = result.fetchone()[0]
+			genre_id = result.fetchone()
+			if genre_id == None:
+				return redirect("/missinginfo")
+			else:
+				genre_id = genre_id[0]
+		else:
+			genre_id = genre_id[0]
 		sql = "SELECT id FROM authors WHERE LOWER(name)=LOWER(:author)"
 		result = db.session.execute(sql, {"author":author})
-		if result.fetchone() != None:
-				author_id = result.fetchone()[0]
-		else:
+		author_id = result.fetchone()
+		if author_id == None:
 			sql = "INSERT INTO authors (name) VALUES (:author)"
 			db.session.execute(sql, {"author":author})
 			result = db.session.execute("SELECT currval('authors_id_seq')")
-			if result.fetchone() != None:
-				author_id = result.fetchone()[0]
+			author_id = result.fetchone()
+			if author_id == None:
+				return redirect("/missinginfo")
+			else:
+				author_id = author_id[0]
+		else:
+			author_id = author_id[0]
 		sql = "INSERT INTO books (name, author_id, genre_id) VALUES (:name, :author_id, :genre_id)"
 		db.session.execute(sql, {"name":name, "author_id":author_id, "genre_id":genre_id})
 		db.session.commit()
-	return redirect("/books")
+		return redirect("/books")
+	else:
+		return redirect("/alreadyexists")
 
 @app.route("/sendreview", methods=["POST"])
 def sendreview():
