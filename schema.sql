@@ -6,9 +6,7 @@ CREATE TABLE genres
 	name TEXT);
 CREATE TABLE books 
 	(id SERIAL PRIMARY KEY, 
-	name TEXT, 
-	author TEXT,
-	genre TEXT,
+	name TEXT,
 	author_id INTEGER REFERENCES authors,
 	genre_id INTEGER REFERENCES genres);
 CREATE TABLE reviews 
@@ -20,6 +18,9 @@ CREATE TABLE users
 	username TEXT,
 	password TEXT,
 	admin BOOLEAN);
+CREATE TABLE lists
+	(user_id INTEGER REFERENCES users,
+	book_id INTEGER REFERENCES books);
 
 
 
