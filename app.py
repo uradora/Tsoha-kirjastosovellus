@@ -83,16 +83,13 @@ def books():
 @app.route("/book/<int:id>")
 def book(id):
 	#aika purkkakoodia
-	#validointia tarvitaan; mitä jos genreä tai authoria ei löydy? nonetype
 	result = db.session.execute("SELECT name, genre_id, author_id FROM books WHERE id=:id", {"id":id})
 	book = result.fetchone()
 	genre_id = book[1]
 	author_id = book[2]
 	sql = "SELECT name FROM genres WHERE id=:genre_id"
 	result = db.session.execute(sql, {"genre_id":genre_id})
-	print(result)
 	if result != None:
-		print(result)
 		genre = result.fetchone()[0]
 	sql = "SELECT name FROM authors WHERE id=:author_id"
 	result = db.session.execute(sql, {"author_id":author_id})
@@ -120,7 +117,8 @@ def send():
 			sql = "INSERT INTO genres (name) VALUES (:genre)"
 			db.session.execute(sql, {"genre":genre})
 			result = db.session.execute("SELECT currval('genres_id_seq')")
-			genre_id = result.fetchone()[0]
+			if result != None:
+				genre_id = result.fetchone()[0]
 		sql = "SELECT id FROM authors WHERE LOWER(name)=LOWER(:author)"
 		result = db.session.execute(sql, {"author":author})
 		author_id = result.fetchone()[0]
@@ -128,7 +126,8 @@ def send():
 			sql = "INSERT INTO authors (name) VALUES (:author)"
 			db.session.execute(sql, {"author":author})
 			result = db.session.execute("SELECT currval('authors_id_seq')")
-			author_id = result.fetchone()[0]
+			if result != None:
+				author_id = result.fetchone()[0]
 		sql = "INSERT INTO books (name, author_id, genre_id) VALUES (:name, :author_id, :genre_id)"
 		db.session.execute(sql, {"name":name, "author_id":author_id, "genre_id":genre_id})
 		db.session.commit()
