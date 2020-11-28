@@ -90,11 +90,12 @@ def book(id):
 	author_id = book[2]
 	sql = "SELECT name FROM genres WHERE id=:genre_id"
 	result = db.session.execute(sql, {"genre_id":genre_id})
-	if result != None:
+	print(result)
+	if !(result is None):
 		genre = result.fetchone()[0]
 	sql = "SELECT name FROM authors WHERE id=:author_id"
 	result = db.session.execute(sql, {"author_id":author_id})
-	if result != None:
+	if !(result is None):
 		author = result.fetchone()[0]
 	return render_template("book.html", name=book[0], genre=genre, author=author, id=id)
 
