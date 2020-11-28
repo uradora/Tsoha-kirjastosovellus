@@ -112,8 +112,9 @@ def send():
 	if book == None:
 		sql = "SELECT id FROM genres WHERE LOWER(name)=LOWER(:genre)"
 		result = db.session.execute(sql, {"genre":genre})
-		genre_id = result.fetchone()[0]
-		if genre_id == None:
+		if result != None:
+			genre_id = result.fetchone()[0]
+		else:
 			sql = "INSERT INTO genres (name) VALUES (:genre)"
 			db.session.execute(sql, {"genre":genre})
 			result = db.session.execute("SELECT currval('genres_id_seq')")
@@ -121,8 +122,9 @@ def send():
 				genre_id = result.fetchone()[0]
 		sql = "SELECT id FROM authors WHERE LOWER(name)=LOWER(:author)"
 		result = db.session.execute(sql, {"author":author})
-		author_id = result.fetchone()[0]
-		if author_id == None:
+		if result != None:
+				author_id = result.fetchone()[0]
+		else:
 			sql = "INSERT INTO authors (name) VALUES (:author)"
 			db.session.execute(sql, {"author":author})
 			result = db.session.execute("SELECT currval('authors_id_seq')")
