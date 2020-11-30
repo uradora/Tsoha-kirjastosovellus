@@ -28,7 +28,7 @@ def register():
         username = request.form["username"]
         password = request.form["password"]
         if users.register(username,password):
-            return redirect("/bookslist")
+            return redirect("/")
         else:
             return render_template("error.html",message="Rekisteröinti ei onnistunut")
 
