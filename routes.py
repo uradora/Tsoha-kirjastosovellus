@@ -83,7 +83,7 @@ def sendreview():
 def result():
     query = request.args["query"]
     bookslist = books.find_byquery(query)
-    return render_template("result.html", books=books)
+    return render_template("result.html", books=bookslist)
 
 @app.route("/booklist/")
 def booklist():
