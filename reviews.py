@@ -12,7 +12,7 @@ def get_count(id):
     return result.fetchone()
 
 def send_review(review,book_id):
-    if review != None:
+    if review:
         sql = "INSERT INTO reviews (stars, book_id) VALUES (:review, :book_id)"
         db.session.execute(sql, {"review":review, "book_id":book_id})
         db.session.commit()
