@@ -33,7 +33,6 @@ def register(username,password):
             sql = "INSERT INTO users (username,password) VALUES (:username,:password)"
             db.session.execute(sql, {"username":username,"password":hash_value})
             db.session.commit()
-            return True
         except:
             return False
         return login(username,password)

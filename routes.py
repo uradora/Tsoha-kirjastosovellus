@@ -61,7 +61,6 @@ def send():
 
 @app.route("/reviews/<int:id>")
 def reviewsit(id):
-
     reviewsit = reviews.get_reviews(id)
     count = reviews.get_count(id)
     if count == None:
@@ -74,8 +73,11 @@ def reviewsit(id):
 def sendreview():
     book_id = request.form["id"]
     review = request.form["review"]
-    if reviews.send_review(review,book_id):
-        return redirect("/book/"+str(book_id))
+    if "review" in request.form:
+        if reviews.send_review(review,book_id):
+            return redirect("/book/"+str(book_id))
+        else:
+            return render_template("error.html",message="Arvostelun lisääminen ei onnistunut")
     else:
         return render_template("error.html",message="Arvostelun lisääminen ei onnistunut")
 
