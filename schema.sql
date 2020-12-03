@@ -12,7 +12,8 @@ CREATE TABLE books
 CREATE TABLE reviews 
 	(id SERIAL PRIMARY KEY, 
 	stars NUMERIC,
-	book_id INTEGER REFERENCES books);
+	book_id INTEGER REFERENCES books,
+	user_id INTEGER REFERENCES users);
 CREATE TABLE users 
 	(id SERIAL PRIMARY KEY, 
 	username TEXT,
