@@ -36,7 +36,8 @@ def register():
 def bookslist():
     count = books.get_bookcount()
     bookslist = books.get_books()
-    return render_template("books.html", count=count, books=bookslist)
+    admin = users.is_admin()
+    return render_template("books.html", count=count, books=bookslist, admin=admin)
 
 @app.route("/book/<int:id>")
 def book(id):
@@ -47,17 +48,22 @@ def book(id):
 
 @app.route("/new")
 def new():
-	return render_template("new.html")
+    if users.is_admin():
+	    return render_template("new.html")
+    else: return render_template("error.html",message="Ei oikeutta nähdä sivua")
 
 @app.route("/send", methods=["POST"])
 def send():
     name = request.form["name"]
     genre = request.form["genre"]
     author = request.form["author"]
-    if books.send(name,genre,author):
-        return redirect("/bookslist")
+    if users.is_admin():        
+        if books.send(name,genre,author):
+            return redirect("/bookslist")
+        else:
+            return render_template("error.html",message="Kirjan lisääminen ei onnistunut")
     else:
-        return render_template("error.html",message="Kirjan lisääminen ei onnistunut")
+        return render_template("error.html",message="Ei oikeutta tehdä tätä toimintoa")
 
 @app.route("/reviews/<int:id>")
 def reviewsit(id):

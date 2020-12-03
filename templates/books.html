@@ -6,9 +6,10 @@ Kirjoja yhteensä: {{ count }}
 <a href="/book/{{ book[0] }}">Näytä kirjan tiedot</a>
 <hr>
 {% endfor %}
-<hr>
+{% if admin %}
 <a href="/new">Lisää uusi</a>
 <hr>
+{% endif %}
 <form action="/result" method="GET">
 Etsi kirjoja nimellä:
 <input type="text" name="query">

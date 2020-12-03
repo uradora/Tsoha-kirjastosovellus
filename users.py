@@ -5,6 +5,13 @@ from flask import session
 def user_id():
 	return session.get("user_id",0)
 
+def is_admin():
+    userid = user_id()
+    sql = "SELECT admin FROM users WHERE id=:userid"
+    result = db.session.execute(sql, {"userid":userid})
+    admin = result.fetchone()[0]
+    return admin
+
 def login(username,password):
     sql = "SELECT password, id FROM users WHERE username=:username"
     result = db.session.execute(sql, {"username":username})
@@ -30,7 +37,7 @@ def register(username,password):
     if user == None:
         hash_value = generate_password_hash(password)
         try:
-            sql = "INSERT INTO users (username,password) VALUES (:username,:password)"
+            sql = "INSERT INTO users (username,password,admin) VALUES (:username,:password,'f')"
             db.session.execute(sql, {"username":username,"password":hash_value})
             db.session.commit()
         except:

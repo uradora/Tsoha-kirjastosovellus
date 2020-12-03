@@ -12,14 +12,28 @@ def get_count(id):
     return result.fetchone()
 
 def send_review(review,book_id):
-    try:
-        sql = "INSERT INTO reviews (stars, book_id) VALUES (:review, :book_id)"
-        db.session.execute(sql, {"review":review, "book_id":book_id})
-        db.session.commit()
-        return True
-    except:
-        return False
-
+    userid = users.user_id()
+    sql = "SELECT 1 FROM reviews WHERE user_id=:userid and book_id=:book_id"
+    result = db.session.execute(sql, {"userid":userid, "book_id":book_id})
+    if result.fetchone() == None:
+        try:
+            if int(review) > 0 and int(review) < 6:
+                sql = "INSERT INTO reviews (stars, book_id, user_id) VALUES (:review, :book_id, :userid)"
+                db.session.execute(sql, {"review":review, "book_id":book_id, "userid":userid})
+                db.session.commit()
+                return True
+            else:
+                return False
+        except:
+            return False
+    else:
+        try:
+            sql = "UPDATE reviews SET stars = :review WHERE user_id=:userid"
+            result = db.session.execute(sql, {"review":review, "userid":userid})
+            db.session.commit()
+            return True
+        except:
+            return False
 
 
 
