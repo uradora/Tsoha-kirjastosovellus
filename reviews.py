@@ -13,6 +13,8 @@ def get_count(id):
 
 def send_review(review,book_id):
     userid = users.user_id()
+    if userid == 0:
+        return False
     sql = "SELECT 1 FROM reviews WHERE user_id=:userid and book_id=:book_id"
     result = db.session.execute(sql, {"userid":userid, "book_id":book_id})
     if result.fetchone() == None:

@@ -8,11 +8,15 @@ def get_list_byuser(userid):
     return result.fetchall()
 
 def getbook_fromlist(book_id,userid):
+    if userid == 0:
+        return None
     sql = "SELECT book_id, user_id FROM lists WHERE book_id=:book_id AND user_id=:userid"
     result = db.session.execute(sql, {"book_id":book_id, "userid":userid})
     return result.fetchone()
 
 def addbook_tolist(book_id,userid):
+    if userid == 0:
+        return False
     try:
         sql = "INSERT INTO lists (user_id, book_id) VALUES (:userid, :book_id)"
         db.session.execute(sql, {"userid":userid,"book_id":book_id})

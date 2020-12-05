@@ -4,6 +4,7 @@ Nimi: {{ name }}
 Genre: {{ genre }}
 <hr>
 Kirjailija: {{ author }}
+{% if session.username %}
 <hr>
 Lisää arvostelu:
 <form action="/sendreview" method="POST">
@@ -13,13 +14,16 @@ Lisää arvostelu:
 <input type="submit" value="Lähetä">
 <input type="hidden" name="id" value="{{ id }}">
 </form>
+{% endif %}
 <hr>
 <a href="/reviews/{{ id }}">Näytä arvostelut</a>
+{% if session.username %}
 <hr>
 <form action="/addtolist" method="POST">
 Lisää omaan listaan
 <input type="submit" value="Lähetä">
 <input type="hidden" name="id" value="{{ id }}">
 </form>
+{% endif %}
 <hr>
 <a href="/">Takaisin</a>

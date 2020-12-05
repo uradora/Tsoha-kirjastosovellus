@@ -95,6 +95,8 @@ def result():
 @app.route("/booklist/")
 def booklist():
     userid = users.user_id()
+    if userid == 0:
+        return render_template("error.html",message="Et ole kirjautunut sisään")
     resultbooks = lists.get_list_byuser(userid)
     return render_template("booklist.html", books=resultbooks)
 
