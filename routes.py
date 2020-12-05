@@ -4,16 +4,22 @@ from flask import redirect, render_template, request, session
 
 @app.route("/")
 def index():
-	return render_template("index.html")
+    count = books.get_bookcount()
+    bookslist = books.get_books()
+    admin = users.is_admin()
+    return render_template("index.html", count=count, books=bookslist, admin=admin)
 
-@app.route("/login", methods=["POST"])
+@app.route("/login", methods=["GET","POST"])
 def login():
-    username = request.form["username"]
-    password = request.form["password"]
-    if users.login(username,password):
-        return redirect("/bookslist")
-    else:
-        return render_template("error.html",message="Väärä tunnus tai salasana")
+    if request.method == "GET":
+        return render_template("login.html")
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+        if users.login(username,password):
+            return redirect("/")
+        else:
+            return render_template("error.html",message="Väärä tunnus tai salasana")
 
 @app.route("/logout")
 def logout():
@@ -32,18 +38,11 @@ def register():
         else:
             return render_template("error.html",message="Rekisteröinti ei onnistunut")
 
-@app.route("/bookslist")
-def bookslist():
-    count = books.get_bookcount()
-    bookslist = books.get_books()
-    admin = users.is_admin()
-    return render_template("books.html", count=count, books=bookslist, admin=admin)
-
 @app.route("/book/<int:id>")
 def book(id):
     book = books.get_book(id)
-    genre = genres.get_genre(book[1])
-    author = authors.get_author(book[2])
+    genre = genres.get_genre(book[1])[0]
+    author = authors.get_author(book[2])[0]
     return render_template("book.html", name=book[0], genre=genre, author=author, id=id)
 
 @app.route("/new")
@@ -59,7 +58,7 @@ def send():
     author = request.form["author"]
     if users.is_admin():        
         if books.send(name,genre,author):
-            return redirect("/bookslist")
+            return redirect("/")
         else:
             return render_template("error.html",message="Kirjan lisääminen ei onnistunut")
     else:
