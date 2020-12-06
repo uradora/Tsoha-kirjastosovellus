@@ -1,6 +1,17 @@
 body {
     margin: auto;
     max-width: 45em;
-    font-family: 'Comic Sans MS', 'Comic Sans', cursive;
-    font-size: 20px;
+    font-family: 'Helvetica', 'Arial', sans-serif;
+}
+
+nav ul {
+    display: inline-block;
+    padding: 0 .5em;
+}
+
+.header {
+    background: grey;
+    font-weight: bold;
+    padding: 2em 1em;
+    font-size: 2em;
 }

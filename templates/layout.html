@@ -4,18 +4,17 @@
 
 <body>
     <title>Kirjastosovellus - {% block title %}{% endblock %}</title>
-    <h1>Kirjastosovellus</h1>
+    <div class="header">
+        <h1>Kirjastosovellus</h1>
+    </div>
     <nav>
         {% if session.username %}
-        <ul>
-            <li>Olet kirjautunut nimellä {{ session.username }}</li>
-            <li><a href="/logout">Kirjaudu ulos</a></li>
-            <li><a href="/booklist">Tarkastele lukulistaasi</a></li>
-        </ul>
+        Olet kirjautunut nimellä {{ session.username }} |
+        <a href="/logout">Kirjaudu ulos</a> |
+        <a href="/booklist">Tarkastele lukulistaasi</a>
         {% else %}
-        <ul>
-            <li><a href="/login">Kirjaudu sisään</a></li>
-            <li><a href="/register">Rekisteröidy</a></li>
+        <a href="/login">Kirjaudu sisään</a> |
+        <a href="/register">Rekisteröidy</a>
         </ul>
         {% endif %}
     </nav>
