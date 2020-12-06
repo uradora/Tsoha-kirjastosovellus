@@ -1,4 +1,7 @@
-<title>Kirjastosovellus</title>
+{% extends "layout.html" %}
+{% block title %}Etusivu{% endblock %}
+{% block content %}
+<h2>Etusivu</h2>
 Kirjoja yhteensä: {{ count }}
 <hr>
 {% for book in books %}
@@ -15,12 +18,4 @@ Etsi kirjoja nimellä:
 <input type="text" name="query">
 <input type="submit" value="Lähetä">
 </form>
-<hr>
-{% if session.username %}
-<p>Olet kirjautunut nimellä {{ session.username }}</p>
-<a href="/logout">Kirjaudu ulos</a> |
-<a href="/booklist">Tarkastele lukulistaasi</a>
-{% else %}
-<a href="/login">Kirjaudu sisään</a> |
-<a href="/register">Rekisteröidy</a>
-{% endif %}
+{% endblock %}

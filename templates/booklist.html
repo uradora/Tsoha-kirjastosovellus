@@ -1,10 +1,11 @@
-<title>Kirjastosovellus</title>
-Käyttäjän {{ session.username }} kirjalista:
-<hr>
+{% extends "layout.html" %}
+{% block title %}Lukulista{% endblock %}
+{% block content %}
+<h2>Käyttäjän {{ session.username }} kirjalista</h2>
 {% for book in books %}
-{{ book[0] }}
-<a href="/book/{{ book[1] }}">Näytä kirjan tiedot</a>
-<hr>
+<a href="/book/{{ book[1] }}">{{ book[0] }}</a>
+<br>
 {% endfor %}
 <br>
 <a href="/">Takaisin</a>
+{% endblock %}

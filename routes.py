@@ -66,13 +66,15 @@ def send():
 
 @app.route("/reviews/<int:id>")
 def reviewsit(id):
+    book = books.get_book(id)
+    name = book[0]
     reviewsit = reviews.get_reviews(id)
     count = reviews.get_count(id)
     if count == None:
         count = 0
     else:
-        count[0]
-    return render_template("reviews.html", reviews=reviewsit, id=id, count=count)
+        count = count[0]
+    return render_template("reviews.html", reviews=reviewsit, id=id, count=count, name=name)
 
 @app.route("/sendreview", methods=["POST"])
 def sendreview():
@@ -90,7 +92,7 @@ def sendreview():
 def result():
     query = request.args["query"]
     bookslist = books.find_byquery(query)
-    return render_template("result.html", books=bookslist)
+    return render_template("result.html", books=bookslist, query=query)
 
 @app.route("/booklist/")
 def booklist():

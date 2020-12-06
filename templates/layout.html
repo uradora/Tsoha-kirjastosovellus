@@ -1,0 +1,23 @@
+<!doctype html>
+<link rel="stylesheet" href="/../static/styles/main.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<body>
+    <title>Kirjastosovellus - {% block title %}{% endblock %}</title>
+    <h1>Kirjastosovellus</h1>
+    <nav>
+        {% if session.username %}
+        <ul>
+            <li>Olet kirjautunut nimellä {{ session.username }}</li>
+            <li><a href="/logout">Kirjaudu ulos</a></li>
+            <li><a href="/booklist">Tarkastele lukulistaasi</a></li>
+        </ul>
+        {% else %}
+        <ul>
+            <li><a href="/login">Kirjaudu sisään</a></li>
+            <li><a href="/register">Rekisteröidy</a></li>
+        </ul>
+        {% endif %}
+    </nav>
+    {% block content %}{% endblock %}
+</body>

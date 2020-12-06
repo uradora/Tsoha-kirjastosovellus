@@ -1,7 +1,8 @@
-<title>Kirjastosovellus</title>
-<hr>
+{% extends "layout.html" %}
+{% block title %}Kirjan arvostelut{% endblock %}
+{% block content %}
+<h2>Kirjan {{name}} arvostelut</h2>
 Arvosteluja yhteensä: {{ count }}
-<hr>
 <ul>
 {% for review in reviews %}
 <li>{{ review[0 ]}} tähteä: {{ review[1] }} kpl
@@ -9,3 +10,4 @@ Arvosteluja yhteensä: {{ count }}
 </ul>
 <hr>
 <a href="/book/{{ id }}">Takaisin</a>
+{% endblock %}
