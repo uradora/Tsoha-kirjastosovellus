@@ -23,3 +23,17 @@ def addbook_tolist(book_id,userid):
     except:
         return False
 
+def get_lists_with_bookid(book_id):
+    sql = "SELECT * FROM lists WHERE book_id=:book_id"
+    result = db.session.execute(sql, {"book_id":book_id})
+    return result.fetchall()
+
+def delete_book_fromlist(book_id):
+    try:
+        sql = "DELETE FROM lists WHERE book_id=:book_id"
+        db.session.execute(sql, {"book_id":book_id})
+        db.session.commit()
+        return True
+    except:
+        return False
+

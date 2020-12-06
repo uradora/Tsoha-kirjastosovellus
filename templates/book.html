@@ -23,8 +23,14 @@ Lisää arvostelu:
 {% if session.username %}
 <hr>
 <form action="/addtolist" method="POST">
-Lisää omaan listaan
-<input type="submit" value="Lähetä">
+<input type="submit" value="Lisää omaan listaan">
+<input type="hidden" name="id" value="{{ id }}">
+</form>
+{% endif %}
+{% if admin %}
+<hr>
+<form action="/deletebook" method="POST">
+<input type="submit" value="Poista kirja">
 <input type="hidden" name="id" value="{{ id }}">
 </form>
 {% endif %}

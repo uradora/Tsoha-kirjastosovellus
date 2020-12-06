@@ -43,7 +43,8 @@ def book(id):
     book = books.get_book(id)
     genre = genres.get_genre(book[1])[0]
     author = authors.get_author(book[2])[0]
-    return render_template("book.html", name=book[0], genre=genre, author=author, id=id)
+    admin = users.is_admin()
+    return render_template("book.html", name=book[0], genre=genre, author=author, id=id, admin=admin)
 
 @app.route("/new")
 def new():
@@ -116,4 +117,15 @@ def addtolist():
             return render_template("error.html",message="Kirjan lisääminen listaan epäonnistui")
     else:
         return render_template("error.html",message="Kirja on jo listalla")
+
+@app.route("/deletebook", methods=["POST"])
+def deletebook():
+    if users.is_admin():
+        book_id = request.form["id"]
+        if books.delete_book(book_id):
+            return redirect("/")
+        else:
+            return render_template("error.html",message="Kirjan poistaminen ei onnistunut")
+    else:
+        return render_template("error.html",message="Ei oikeuksia poistaa kirjaa")
         

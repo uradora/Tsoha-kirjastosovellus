@@ -1,21 +1,23 @@
 {% extends "layout.html" %}
 {% block title %}Etusivu{% endblock %}
 {% block content %}
-<h2>Etusivu</h2>
-Kirjoja yhteensä: {{ count }}
-<hr>
-{% for book in books %}
-<a href="/book/{{ book[0] }}">{{ book[1] }}</a>
-<br>
-{% endfor %}
-<hr>
-{% if admin %}
-<a href="/new">Lisää uusi</a>
-<hr>
-{% endif %}
-<form action="/result" method="GET">
-Etsi kirjoja nimellä:
-<input type="text" name="query">
-<input type="submit" value="Lähetä">
-</form>
+    <div>
+        <h2 style="text-align: center;">Etusivu</h2>
+        <p style="font-size: 20px;">Kirjoja yhteensä: {{ count }}</p>
+        <hr>
+        {% for book in books %}
+        <a href="/book/{{ book[0] }}" style="color: rgb(128, 71, 71);">{{ book[1] }}</a>
+        <br>
+        {% endfor %}
+        <hr>
+        {% if admin %}
+        <a href="/new" style="color: rgb(128, 71, 71);">Lisää uusi</a>
+        <hr>
+        {% endif %}
+        <form action="/result" method="GET">
+        Etsi kirjoja nimellä:
+        <input type="text" name="query">
+        <input type="submit" value="Lähetä">
+        </form>
+    </div>
 {% endblock %}

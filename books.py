@@ -1,5 +1,5 @@
 from db import db
-import users, genres, authors
+import users, genres, authors, lists, reviews
 
 def get_bookcount():
     result = db.session.execute("SELECT COUNT (*) FROM books")
@@ -45,4 +45,21 @@ def find_byquery(query):
     sql = "SELECT id, name FROM books WHERE LOWER(name) LIKE LOWER(:query)"
     result = db.session.execute(sql, {"query":"%"+query+"%"})
     return result.fetchall()
+
+def delete_book(id):
+    listswithbook = lists.get_lists_with_bookid(id)
+    if listswithbook != None:
+        if lists.delete_book_fromlist(id) != True:
+            return False
+    reviewswithbook = reviews.get_reviews_with_bookid(id)
+    if reviewswithbook != None:
+        if reviews.delete_review_bybook(id) != True:
+            return False
+    try:
+        sql = "DELETE from books WHERE id=:id"
+        db.session.execute(sql, {"id":id})
+        db.session.commit()
+        return True
+    except:
+        return False
 

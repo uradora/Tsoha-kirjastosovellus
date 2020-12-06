@@ -37,6 +37,19 @@ def send_review(review,book_id):
         except:
             return False
 
+def get_reviews_with_bookid(book_id):
+    sql = "SELECT * FROM reviews WHERE book_id=:book_id"
+    result = db.session.execute(sql, {"book_id":book_id})
+    return result.fetchall()
+
+def delete_review_bybook(book_id):
+    try:
+        sql = "DELETE FROM reviews WHERE book_id=:book_id"
+        db.session.execute(sql, {"book_id":book_id})
+        db.session.commit()
+        return True
+    except:
+        return False
 
 
 
