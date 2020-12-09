@@ -3,9 +3,9 @@
 {% block content %}
 <h2>Käyttäjän {{ session.username }} kirjalista</h2>
 {% for book in books %}
-<a href="/book/{{ book[1] }}">{{ book[0] }}</a>
+<a href="/book/{{ book[1] }}" style="color: rgb(128, 71, 71)">{{ book[0] }}</a>
 <br>
 {% endfor %}
 <br>
-<a href="/">Takaisin</a>
+<a href="/" style="color: rgb(128, 71, 71)">Takaisin</a>
 {% endblock %}

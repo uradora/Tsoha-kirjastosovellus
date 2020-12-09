@@ -19,7 +19,7 @@ Lisää arvostelu:
 </form>
 {% endif %}
 <hr>
-<a href="/reviews/{{ id }}">Näytä arvostelut</a>
+<a href="/reviews/{{ id }}" style="color: rgb(128, 71, 71)">Näytä arvostelut</a>
 {% if session.username %}
 <hr>
 <form action="/addtolist" method="POST">
@@ -35,5 +35,5 @@ Lisää arvostelu:
 </form>
 {% endif %}
 <hr>
-<a href="/">Takaisin</a>
+<a href="/" style="color: rgb(128, 71, 71)">Takaisin</a>
 {% endblock %}
