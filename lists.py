@@ -2,8 +2,8 @@ from db import db
 import users, books
 
 def get_list_byuser(userid):
-    sql = "SELECT B.name, L.book_id FROM users U, books B, lists L" \
-        " WHERE U.id = L.user_id AND B.id = L.book_id AND L.user_id=:userid"
+    sql = "SELECT B.name, L.book_id FROM users U JOIN lists L" \
+        " ON U.id = L.user_id JOIN books B ON B.id = L.book_id WHERE L.user_id=:userid"
     result = db.session.execute(sql, {"userid":userid})
     return result.fetchall()
 

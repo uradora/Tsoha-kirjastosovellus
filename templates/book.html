@@ -3,10 +3,19 @@
 {% block content %}
 <h2>Kirjan tiedot</h2>
 Nimi: {{ name }}
-<hr>
+<br>
 Genre: {{ genre }}
-<hr>
+<br>
 Kirjailija: {{ author }}
+<br>
+Julkaisija: {{ publisher }}
+<br>
+Julkaisupaikka: {{ published_in }}
+<br>
+Julkaisuvuosi: {{ year }}
+<br>
+ISBN: {{ isbn }}
+<br>
 {% if session.username %}
 <hr>
 Lisää arvostelu:

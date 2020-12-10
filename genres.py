@@ -1,10 +1,9 @@
 from db import db
 
+#maybe delete
 def get_genre(id):
     sql = "SELECT name FROM genres WHERE id=:id"
     result = db.session.execute(sql, {"id":id})
-    #genre = result.fetchone()
-    #working on books displaying not nones but the names correctly, do this for authors too
     return result.fetchone()
 
 def get_id_byname(name):

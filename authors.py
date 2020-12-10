@@ -1,5 +1,6 @@
 from db import db
 
+#maybe delete
 def get_author(id):
     sql = "SELECT name FROM authors WHERE id=:id"
     result = db.session.execute(sql, {"id":id})

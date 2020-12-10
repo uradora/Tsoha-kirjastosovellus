@@ -10,11 +10,12 @@ def get_books():
 	return result.fetchall()
 
 def get_book(id):
-    sql = "SELECT name, genre_id, author_id FROM books WHERE id=:id"
+    sql = "SELECT B.name, G.name, A.name, B.publisher, B.published_in, B.year, B.isbn" \
+        " FROM books B JOIN genres G ON G.id=B.genre_id JOIN authors A on A.id=B.author_id WHERE B.id=:id"
     result = db.session.execute(sql, {"id":id})
     return result.fetchone()
 
-def send(name,genre,author):
+def send(name,genre,author,publisher,published_in,year,isbn):
     user_id = users.user_id()
     if user_id == 0:
         return False
@@ -22,20 +23,24 @@ def send(name,genre,author):
     result = db.session.execute(sql, {"name":name})
     book = result.fetchone()
     if book == None:
-        if not name:
-            return False
-        if not genre:
-            return False
-        if not author:
+        if (not name) or (not genre) or (not author) or (not publisher) \
+        or (not published_in) or (not year) or (not isbn):
             return False
         genre_id = genres.get_id_byname(genre)
         if genre_id == None:
             genre_id = genres.add_genre(genre)
+        else:
+            genre_id = genre_id[0]
         author_id = authors.get_id_byname(author)
         if author_id == None:
             author_id = authors.add_author(author)
-        sql = "INSERT INTO books (name, author_id, genre_id) VALUES (:name, :author_id, :genre_id)"
-        db.session.execute(sql, {"name":name, "author_id":author_id, "genre_id":genre_id})
+        else:
+            genre_id = genre_id[0]
+        sql = "INSERT INTO books (name, author_id, genre_id, publisher, " \
+            "published_in, year, isbn) VALUES (:name, :author_id, :genre_id, :publisher, " \
+            ":published_in, :year, :isbn)"
+        db.session.execute(sql, {"name":name, "author_id":author_id, "genre_id":genre_id,
+        "publisher":publisher, "published_in":published_in, "year":year, "isbn":isbn})
         db.session.commit()
         return True
     else:

@@ -8,7 +8,11 @@ CREATE TABLE books
 	(id SERIAL PRIMARY KEY, 
 	name TEXT,
 	author_id INTEGER REFERENCES authors,
-	genre_id INTEGER REFERENCES genres);
+	genre_id INTEGER REFERENCES genres,
+	publisher TEXT,
+	published_in TEXT,
+	year NUMERIC,
+	isbn TEXT);
 CREATE TABLE reviews 
 	(id SERIAL PRIMARY KEY, 
 	stars NUMERIC,

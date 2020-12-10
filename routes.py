@@ -41,10 +41,9 @@ def register():
 @app.route("/book/<int:id>")
 def book(id):
     book = books.get_book(id)
-    genre = genres.get_genre(book[1])[0]
-    author = authors.get_author(book[2])[0]
     admin = users.is_admin()
-    return render_template("book.html", name=book[0], genre=genre, author=author, id=id, admin=admin)
+    return render_template("book.html", name=book[0], genre=book[1], author=book[2],
+    id=id, admin=admin, publisher=book[3], published_in=book[4], year=book[5], isbn=book[6])
 
 @app.route("/new")
 def new():
@@ -57,8 +56,14 @@ def send():
     name = request.form["name"]
     genre = request.form["genre"]
     author = request.form["author"]
+    publisher = request.form["publisher"]
+    published_in = request.form["published_in"]
+    year = request.form["year"]
+    isbn = request.form["isbn"]
+    #publisher, published_in, year, isbn
+    #add these to request form too
     if users.is_admin():        
-        if books.send(name,genre,author):
+        if books.send(name,genre,author, publisher, published_in, year, isbn):
             return redirect("/")
         else:
             return render_template("error.html",message="Kirjan lisääminen ei onnistunut")
@@ -107,8 +112,6 @@ def booklist():
 def addtolist():
     book_id = request.form["id"]
     userid = users.user_id()
-    #listing = lists.get_list_byuser(userid)
-    #if listing != None:
     book = lists.getbook_fromlist(book_id,userid)
     if book == None:
         if lists.addbook_tolist(book_id,userid):
