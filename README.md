@@ -7,7 +7,7 @@ Kirjastosovellus
 - [x] Käyttäjä voi lisätä mille tahansa kirjalle arvion (0-5 tähteä).
 - [ ] Kirjoja voi ryhmitellä aakkosjärjestykseen genren, tekijän ja arvioiden mukaan.
 - [x] Käyttäjätyypit ovat peruskäyttäjä ja ylläpitäjä.
-- [ ] Peruskäyttäjä voi lisätä arvosteluja, katsella kirjojen tietoja sekä tarkastella omaa lukulistaansa ja lisätä sinne kirjoja. 
+- [x] Peruskäyttäjä voi lisätä arvosteluja, katsella kirjojen tietoja sekä tarkastella omaa lukulistaansa ja lisätä sinne kirjoja. 
 - [x] Ylläpitäjä voi lisätä tai poistaa kirjoja kaikkien kirjojen luettelosta.
 
 Heroku-linkki: https://tsoha-kirjastosovellus.herokuapp.com/
