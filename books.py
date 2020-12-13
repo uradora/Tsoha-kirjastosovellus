@@ -35,7 +35,7 @@ def send(name,genre,author,publisher,published_in,year,isbn):
         if author_id == None:
             author_id = authors.add_author(author)
         else:
-            genre_id = genre_id[0]
+            author_id = author_id[0]
         sql = "INSERT INTO books (name, author_id, genre_id, publisher, " \
             "published_in, year, isbn) VALUES (:name, :author_id, :genre_id, :publisher, " \
             ":published_in, :year, :isbn)"
