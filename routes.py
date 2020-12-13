@@ -60,10 +60,8 @@ def send():
     published_in = request.form["published_in"]
     year = request.form["year"]
     isbn = request.form["isbn"]
-    #publisher, published_in, year, isbn
-    #add these to request form too
     if users.is_admin():        
-        if books.send(name,genre,author, publisher, published_in, year, isbn):
+        if books.send(name,genre,author,publisher,published_in,year,isbn):
             return redirect("/")
         else:
             return render_template("error.html",message="Kirjan lisääminen ei onnistunut")
