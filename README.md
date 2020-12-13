@@ -16,7 +16,7 @@ Sovelluksen etusivulla on lista kaikista kirjoista, jotka sovellukseen on lisät
 
 Lisäksi vain ylläpitäjä voi lisätä tai poistaa kirjoja. Kirjan voi lisätä etusivun linkistä ja sen voi poistaa seuraamalla kirjan nimestä napsauttamalla avautuvaa linkkiä. Näiden toiminnallisuuden herokussa testaamista varten käyttäjätunnus on admin ja salasana admin.
 
-# Tunnettuja bugeja ja kehityssuunnitelmia
+### Tunnettuja bugeja ja kehityssuunnitelmia
 
 Sovellus kaatuu, kun yritetään lisätä kirjaa, jonka julkaisuvuosi-arvo on jotain muuta kuin numeerinen. Tämän voi korjata lisäämällä tulevaisuudessa input-validointia.
 Kirjoille ei vielä saatu implementoitua tarkempaa hakua, jossa voidaan hakea esimerkiksi tekijän, genren tai julkaisuvuoden mukaan. Tämäkin on tarkoitus tehdä luomalla jonkinlainen lomake, jossa on input-validointia.
